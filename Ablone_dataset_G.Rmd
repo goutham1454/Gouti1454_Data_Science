@@ -1,0 +1,163 @@
+---
+title: "Ablone_dataset_G"
+author: "gouti1454"
+date: "21/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+#Ozone data base in R
+
+# read data
+ab<- read.csv("abalone_csv.csv",header=TRUE,col.names = c("Sex","Length","Dia","Height","Whl_weight","Shucked_weight","Vscr_weight","Shell_weight","Ring"))
+
+# remove na rows for initial operations
+ab=na.omit(ab)
+head(ab,5) #view first five rows
+```
+
+```{r}
+ab2 <- ab[,c(1,5,2,3,4,6,7,8,9)]
+head(ab2,5)
+```
+
+```{r}
+#most varing variables is ring (just see the data in the table also) ; less VIF values and std. error.
+model_all = lm(Whl_weight ~ Ring +Length +Dia + Height + Shucked_weight + Vscr_weight +Shell_weight, data = ab)
+summary(model_all)
+```
+
+```{r}
+car::vif(model_all)
+```
+
+```{r}
+#removing Dia from the equation.
+model_all2 = lm(Whl_weight ~ Ring +Length+ Height + Shucked_weight + Vscr_weight +Shell_weight, data = ab2)
+summary(model_all2)
+```
+
+```{r}
+car::vif(model_all2)
+```
+
+```{r}
+# the VIF has come down from 40 to 10 after removing DIA from the equation
+
+
+par(mfrow=c(2,2))#creating graph 4by4
+plot(model_all2)#ploitng graph for model_all2
+
+X<-ab2[,2:9]#pair-wise correlation among the explanatory variables.
+library(GGally)
+```
+
+```{r}
+## Loading required package: ggplot2
+## Registered S3 method overwritten by 'GGally':
+##   method from   
+##   +.gg   ggplot2
+library('GGally')
+ggpairs(X)#graph
+```
+
+```{r}
+library(corpcor)
+#Meaning of r values (+/- small, +/- medium, +/- high): check in the PPT
+cov(X, use = "everything")
+```
+
+```{r}
+round(cor2pcor(cov(X)),3)
+```
+
+```{r}
+#Farrar – Glauber Test
+library(mctest)
+omcdiag(X,ab$Whl_weight)
+```
+
+```{r}
+imcdiag(X,ab$Whl_weight)
+```
+
+```{r}
+#In R, there are several packages for getting the partial correlation coefficients along with the t- test for checking their significance level.
+library(ppcor)
+## Loading required package: MASS
+pcor(X, method = "pearson")
+
+```
+
+```{r}
+#finding corelation among all the variables. removing the column1 and rounding the decimel to 3.
+#round(cor(ab[,-1]),3)
+#corelation graph
+library(corrplot)
+```
+
+```{r}
+correlations1 <-round(cor(ab2[,-1],method = c("pearson")),3)#removing the first column due to not integer. 
+#corrplot(correlations1, method="circle", type="lower",  sig.level = 0.01, insig = "blank")
+corrplot(correlations1, method="number", type="lower",  sig.level = 0.01, insig = "blank")# here colrelation is given as number ; method = number
+
+correlations2 <- round(cor(ab2[,-c(1,2,3,4,5)],method = c("pearson")),3)# removing the first 5 column, as VIF is more for the shucked, vscr and shell weight
+#corrplot(correlations2, method="circle", type="lower",  sig.level = 0.01, insig = "blank")
+corrplot(correlations2, method="number", type="lower",  sig.level = 0.01, insig = "blank")## here colrelation is given as number ; method = number
+
+library(car)
+```
+
+```{r}
+vif(model_all2)
+
+```
+
+```{r}
+#Vscr_weight has the heighest VIF value, removing it.
+#after removing Vscr_weight, Ajusted r2 is reduced from 0.9912 to 0.9855
+model_all3 = lm(Whl_weight ~ Ring +Length+ Height + Shucked_weight +Shell_weight, data = ab2)
+summary(model_all3)
+```
+
+```{r}
+car:: vif(model_all3)
+```
+
+```{r}
+#height is less significant compared to others.Adjusted R-squared:  0.9855
+model_all4 = lm(Whl_weight ~ Ring +Length + Shucked_weight +Shell_weight, data = ab)
+summary(model_all4)
+```
+
+```{r}
+car:: vif(model_all4)
+```
+
+```{r}
+## now All the independent values have high significance P values.Adjusted R-squared:  0.9855 
+```
+
