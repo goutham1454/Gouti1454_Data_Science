@@ -1,7 +1,6 @@
 ---
 title: "Ablone_dataset_G"
 author: "gouti1454"
-date: "21/12/2019"
 output: html_document
 ---
 
