@@ -1,7 +1,9 @@
 ---
 title: "Ablone_dataset_G"
 author: "gouti1454"
-output: html_document
+output:
+  html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
