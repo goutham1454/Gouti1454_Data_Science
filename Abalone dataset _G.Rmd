@@ -1,5 +1,5 @@
 ---
-title: "Ablone dataset _G"
+title: "Abalone dataset _G"
 author: "gouti1454"
 output:
   html_document: default
