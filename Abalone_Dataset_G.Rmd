@@ -163,4 +163,5 @@ car:: vif(model_all4)
 ```{r}
 ## now All the independent values have high significance P values.Adjusted R-squared:  0.9855 
 ```
-
+# Find the OUTPUFILE in HTML format
+https://github.com/goutham1454/Gouti1454_R_data_science/blob/master/Abalone_Dataset_Output_file_G.html.zip
