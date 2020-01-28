@@ -83,13 +83,18 @@ summary(influence.measures(lm3))
 
 ```{r}
 fat
-fat1=fat[-39,]
+fat1=fat[c(-39,-106,-216),]
 fat1
 ```
 
 ```{r}
 lm4 <- lm(PFB ~ Age + FFW + NC + factor(BMI), data = fat1)
 summary(lm4)
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(lm4,which = 1:4)
 ```
 
 
