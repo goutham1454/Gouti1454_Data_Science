@@ -28,3 +28,68 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+#15 sep 2019
+#http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/R/R5_Correlation-Regression/R5_Correlation-Regression2.html
+##
+fat <- read.csv("fatdat.csv")
+str(fat)
+```
+
+```{r}
+cor(fat$Age, fat$PFB, method="pearson")
+cor(fat$PFB, fat[,-1])
+fat$BMI = ifelse(fat$Ai > 25,1,0)
+```
+
+
+```{r}
+lm1=lm(fat$PFB ~ fat$NC)
+summary(lm1)
+```
+
+
+```{r}
+lm2=lm(PFB~Age+FFW+NC,data=fat)
+summary(lm2)
+```
+
+
+```{r}
+plot(PFB ~ NC,data = fat)
+abline(lm1)
+```
+
+```{r}
+lm3 <- lm(PFB ~ Age + FFW + NC + factor(BMI), data = fat)
+summary(lm3)
+```
+
+
+```{r}
+par(mfrow=c(2,2))
+plot(lm3,which = 1:4)
+```
+
+```{r}
+ls(lm3)
+lm3$coefficients
+```
+
+```{r}
+summary(influence.measures(lm3))
+```
+
+```{r}
+fat
+fat1=fat[-39,]
+fat1
+```
+
+```{r}
+lm4 <- lm(PFB ~ Age + FFW + NC + factor(BMI), data = fat1)
+summary(lm4)
+```
+
+
