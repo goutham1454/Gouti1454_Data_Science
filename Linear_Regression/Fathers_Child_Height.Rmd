@@ -102,13 +102,3 @@ anova(lm(data=g,formula=Height ~ Father+factor(Gender)))
 
 ```
 
-
-```{r}
-
-```
-
-
-```{r}
-
-```
-
