@@ -28,26 +28,85 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+# Set the path where data is present
+#setwd("")
+```
+
 
 ```{r}
+#7 sep 2019
+# Predict chidrens height # 7% variances is explained by fathers height
+x<- c(-4,-2,2,4,10)
+y<- c(-2,4,2,6,8)
+```
 
+```{r}
+summary(lm(y~x))
+
+```
+
+```{r}
+#id<-"https://drive.google.com/file/d/0B0ELS_iT9i-2ckgzTkNVQUVWRWs/view"
+#g<-read.csv(sprintf("galton.csv"))
+g <- read.csv("galton.csv")
+head(g)
+```
+
+```{r}
+lr1=lm(Height ~ Father, data = g)
+summary(lr1)
+```
+
+```{r}
+plot(g$Father, g$Height)
+```
+
+```{r}
+summary(lm(formula=Height ~ Father, data=g))
+
+```
+
+
+```{r}
+gm=g[g$Gender=="M",] # subsetting and keeping male children data only
+summary(lm(gm$Height~gm$Father))
+```
+
+```{r}
+gf=g[g$Gender=="F",] # subsetting and keeping female children data only
+summary(lm(gf$Height~gf$Father))
+```
+
+```{r}
+#Combined gender differentiating model
+summary(lm(data=g,formula=Height ~ Father+factor(Gender))) 
+```
+
+
+```{r}
+anova(lm(data=g,formula=Height ~ Father+factor(Gender)))
+873.1/10642
+873.1+10642
+873.1/11515.1
+```
+
+
+```{r}
+#combined 
+anova(lm(data=g,formula=Height ~ Father+factor(Gender)))
+872.1+6002.6+4639.4
 ```
 
 ```{r}
 
 ```
 
-```{r}
-
-```
 
 ```{r}
 
 ```
 
-```{r}
-
-```
 
 ```{r}
 
