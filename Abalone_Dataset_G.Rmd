@@ -33,7 +33,7 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 #Ozone data base in R
 
 # read data
-setwd("~/Downloads/001.Analytics Adayar")
+#setwd("")
 ab<- read.csv("abalone_csv.csv",header=TRUE,col.names = c("Sex","Length","Dia","Height","Whl_weight","Shucked_weight","Vscr_weight","Shell_weight","Ring"))
 
 # remove na rows for initial operations
